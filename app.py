@@ -42,7 +42,10 @@ def home():
     return (
         f"Available Routes:<br/>"
         f"/api/v1.0/precipitation<br/>"
-        f"/api/v1.0/stations"
+        f"/api/v1.0/stations<br/>"
+        f"/api/v1.0/tobs<br/>"
+        f"/api/v1.0/'enter start date'<br/>"
+        f"/api/v1.0/'enter start date'/'enter end date'<br/>"
     )
 
 @app.route("/api/v1.0/precipitation")
@@ -58,8 +61,13 @@ def tobs():
     return "hi"
 
 @app.route("/api/v1.0/<start>")
-def start():
-    return "hi"
+@app.route("/api/v1.0/<start>/<end>")
+def tobs_date_range(start, end=None):
+    if end:
+        result = "hi"
+    else:
+        result = "hey"
+    return result
 
 if __name__ == '__main__':
     app.run(debug=True)
