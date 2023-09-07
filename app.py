@@ -1,6 +1,8 @@
 # Import the dependencies.
-
-
+from flask import Flask, jsonify
+from sqlalchemy.ext.automap import automap_base
+from sqlalchemy.orm import Session
+from sqlalchemy import create_engine, func
 
 #################################################
 # Database Setup
@@ -8,14 +10,18 @@
 
 
 # reflect an existing database into a new model
+engine = create_engine("sqlite:///Resources/hawaii.sqlite")
+base = automap_base()
 
 # reflect the tables
-
+base.prepare(autoload_with=engine)
 
 # Save references to each table
-
+measurement = base.classes.measurement
+station = base.classes.station
 
 # Create our session (link) from Python to the DB
+session = Session(engine)
 
 
 #################################################
@@ -23,8 +29,39 @@
 #################################################
 
 
+app = Flask(__name__)
 
 
 #################################################
 # Flask Routes
 #################################################
+
+
+@app.route("/")
+def home():
+    return (
+        f"Available Routes:<br/>"
+        f"/api/v1.0/precipitation<br/>"
+        f"/api/v1.0/stations"
+    )
+
+@app.route("/api/v1.0/precipitation")
+def precipitation():
+    return "hey"
+
+@app.route("/api/v1.0/stations")
+def stations():
+    return "hi"
+
+@app.route("/api/v1.0/tobs")
+def tobs():
+    return "hi"
+
+@app.route("/api/v1.0/<start>")
+def start():
+    return "hi"
+
+if __name__ == '__main__':
+    app.run(debug=True)
+
+session.close()
